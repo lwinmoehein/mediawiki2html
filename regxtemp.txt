@@ -2,3 +2,5 @@
 \{{2}(\ba\|[\w\s]+\b|\bIPA.+|\benPR.+\b|\brhymes.+)\}{2}
 #sound lines
 \*\s\{{2}.+\}{2}
+#soudn section capture
+\n===အသံထွက်===.*\n*((?:\n.*)+?)(?=\n===)

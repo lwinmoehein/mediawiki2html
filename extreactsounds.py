@@ -1,13 +1,15 @@
 import re
 
-
-def extractSoudsSections(section):
+#accept sound section and convert it to list string
+def modifySoundSection(section):
+  if len(section)==0:
+    return ""
   soundLinesPattern = re.compile(r'\*\s\{{2}.+\}{2}')
   lineMatches = soundLinesPattern.finditer(section)
 
   finalSounds = ""
   for lineMatch in lineMatches:
-    line = string[lineMatch.start():lineMatch.end()]
+    line = section[lineMatch.start():lineMatch.end()]
     pattern = re.compile(r"\{{2}(\ba\|[\w\s]+\b|\bIPA.+|\benPR.+\b|\brhymes.+)\}{2}")
 
     matches = pattern.finditer(line)
@@ -21,12 +23,17 @@ def extractSoudsSections(section):
   return finalSounds
 
 
-string = '''
-   * {{a|US}}, {{a|UK}} {{enPR|fŭk}}, {{IPA2|/fʌk/}}
-* {{rhymes|ʌk}}
-* 
-* {{a|some Northern English accents}} {{enPR|fo͝ok}}, {{IPA2|/fʊk/}}
-* {{rhymes|ʊk}}
-'''
 
-print(extractSoudsSections(string))
+#extract sound section as a string
+def extractSoundSection(string):
+    if len(string)==0:
+      return ""
+    pattern = re.compile(r'\n===အသံထွက်===.*\n*((?:\n.*)+?)(?=\n===)')
+    soundSection = pattern.search(string)
+    grabbedString = ""
+    if soundSection:
+      grabbedString = soundSection[0]
+    else:
+      grabbedString = ""
+    modifiedString = modifySoundSection(grabbedString)
+    return modifiedString
