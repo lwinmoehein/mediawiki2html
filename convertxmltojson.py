@@ -23,14 +23,14 @@ for page in root:
     #print(text)
     revision = page.find('revision/text').text
     #pypandoc.convert_text(extractSoundSection(revision), 'rst', format='html')
-    meaning = extractSoundSection(revision)
+    sounds = extractSoundSection(revision)
     
-    word = {"title":title,"meaning":meaning}    
+    word = {"title":title,"sounds":sounds}    
     words.append(object)
     i+=1
 
-#save content to json file
-# fileContent = json.dumps(words)
-# file.write(filecontent)
-# file.close()
+# save content to json file
+fileContent = json.dumps(words)
+file.write(filecontent)
+file.close()
 
