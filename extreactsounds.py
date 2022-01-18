@@ -17,32 +17,34 @@ def modifySoundSection(section):
   lineMatches = soundLinesPattern.finditer(section)
 
   finalSounds = ""
-  for lineMatch in lineMatches:
-    #extract a's
-   
+  for lineMatch in lineMatches:   
     #get the line
     line = section[lineMatch.start():lineMatch.end()]
+    
     #a section
     modifiedAs = "( "
-    aPattern = re.compile(r'\ba\|[\w\s]+\b')
+    aPattern = re.compile(r'\{{2}a\|(.+?)\}{2}')
     aMatches = aPattern.finditer(line)
     for a in aMatches:
-       modifiedAs+=line[a.start():a.end()].replace("a|", "")+","
+       modifiedAs+=a.group(1)+","
     modifiedAs=modifiedAs.rstrip(',')
     modifiedAs=(modifiedAs+" ),").replace("(  ),", "")
-  
+    #end a section
+    
+    #accents
     pattern = re.compile(r"\{{2}(rhymes.+|IPA.+|enPR.+?)\}{2}")
-
     matches = pattern.finditer(line)
-
     finalLine = ""
     for match in matches:
       line = match.group(1)
       line = line.replace("|", ": ")
       
       finalLine+=("\n\t* "+line)
+    #end accents
+    
+    #final modificatioin
     if(modifiedAs!=""):
-      finalSounds+="* "+modifiedAs+"\n\t"+finalLine+"\n"
+      finalSounds+="* "+modifiedAs+"\n"+finalLine+"\n"
     else:
       finalSounds+="* "+finalLine+"\n"
   return finalSounds
