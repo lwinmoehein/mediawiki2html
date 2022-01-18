@@ -29,7 +29,7 @@ def modifySoundSection(section):
     for a in aMatches:
        modifiedAs+=line[a.start():a.end()].replace("a|", "")+","
     modifiedAs=modifiedAs.rstrip(',')
-    modifiedAs=(modifiedAs+" ),").replace("(),", "")
+    modifiedAs=(modifiedAs+" ),").replace("(  ),", "")
   
     pattern = re.compile(r"\{{2}(rhymes.+|IPA.+|enPR.+?)\}{2}")
 
@@ -37,13 +37,7 @@ def modifySoundSection(section):
 
     finalLine = ""
     for match in matches:
-      print(match.group(1))
-      start = match.start()
-      end = match.end()
-      
-    
-      line = line[start:end].replace("{{", "")
-      line = line.replace("}}", "")
+      line = match.group(1)
       line = line.replace("|", ": ")
       
       finalLine+=("\n\t* "+line)
@@ -53,7 +47,7 @@ def modifySoundSection(section):
       finalSounds+="* "+finalLine+"\n"
   return finalSounds
 
-modifySoundSection(modifyString)
+print(modifySoundSection(modifyString))
 
 #extract sound section as a string
 def extractSoundSection(string):
