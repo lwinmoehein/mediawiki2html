@@ -28,7 +28,7 @@ def modifySoundSection(section):
     for a in aMatches:
        modifiedAs+=a.group(1)+","
     modifiedAs=modifiedAs.rstrip(',')
-    modifiedAs=(modifiedAs+" ),").replace("(  ),", "")
+    modifiedAs=(modifiedAs+" ),").replace("(  ),", "").strip(',')
     #end a section
     
     #accents
@@ -38,15 +38,19 @@ def modifySoundSection(section):
     for match in matches:
       line = match.group(1)
       line = line.replace("|", ": ")
-      
-      finalLine+=("\n\t* "+line)
+      if(modifiedAs!=""):
+        finalLine+=("\n  * "+line)
+      else:
+        finalLine+=("\n* "+line)
     #end accents
     
     #final modificatioin
     if(modifiedAs!=""):
+      print("equal space as:"+modifiedAs)
       finalSounds+="* "+modifiedAs+"\n"+finalLine+"\n"
     else:
-      finalSounds+="* "+finalLine+"\n"
+      print("not equal space as:"+modifiedAs)
+      finalSounds+=finalLine+"\n"
   return finalSounds
 
 print(modifySoundSection(modifyString))
