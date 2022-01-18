@@ -23,20 +23,21 @@ def modifySoundSection(section):
     #get the line
     line = section[lineMatch.start():lineMatch.end()]
     #a section
-    modifiedAs = "("
+    modifiedAs = "( "
     aPattern = re.compile(r'\ba\|[\w\s]+\b')
     aMatches = aPattern.finditer(line)
     for a in aMatches:
        modifiedAs+=line[a.start():a.end()].replace("a|", "")+","
     modifiedAs=modifiedAs.rstrip(',')
-    modifiedAs+="),"
-    print(modifiedAs)
-    pattern = re.compile(r"\{{2}(\bIPA.+|\benPR.+\b|\brhymes.+)\}{2}")
+    modifiedAs=(modifiedAs+" ),").replace("(),", "")
+  
+    pattern = re.compile(r"\{{2}(rhymes.+|IPA.+|enPR.+?)\}{2}")
 
     matches = pattern.finditer(line)
 
     finalLine = ""
     for match in matches:
+      print(match.group(1))
       start = match.start()
       end = match.end()
       
@@ -45,8 +46,11 @@ def modifySoundSection(section):
       line = line.replace("}}", "")
       line = line.replace("|", ": ")
       
-      finalLine+= line+","
-    finalSounds+="* "+finalLine+"\n"
+      finalLine+=("\n\t* "+line)
+    if(modifiedAs!=""):
+      finalSounds+="* "+modifiedAs+"\n\t"+finalLine+"\n"
+    else:
+      finalSounds+="* "+finalLine+"\n"
   return finalSounds
 
 modifySoundSection(modifyString)
