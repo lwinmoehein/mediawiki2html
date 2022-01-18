@@ -1,16 +1,37 @@
 import re
 
+modifyString = '''
+* {{a|US}}, {{a|UK}} {{enPR|fŭk}}, {{IPA2|/fʌk/}}
+* {{rhymes|ʌk}}
+* 
+* {{a|some Northern English accents}} {{enPR|fo͝ok}}, {{IPA2|/fʊk/}}
+* {{rhymes|ʊk}}'''
+
 #accept sound section and convert it to list string
 def modifySoundSection(section):
   if len(section)==0:
     return ""
+
+  
   soundLinesPattern = re.compile(r'\*\s\{{2}.+\}{2}')
   lineMatches = soundLinesPattern.finditer(section)
 
   finalSounds = ""
   for lineMatch in lineMatches:
+    #extract a's
+   
+    #get the line
     line = section[lineMatch.start():lineMatch.end()]
-    pattern = re.compile(r"\{{2}(\ba\|[\w\s]+\b|\bIPA.+|\benPR.+\b|\brhymes.+)\}{2}")
+    #a section
+    modifiedAs = "("
+    aPattern = re.compile(r'\ba\|[\w\s]+\b')
+    aMatches = aPattern.finditer(line)
+    for a in aMatches:
+       modifiedAs+=line[a.start():a.end()].replace("a|", "")+","
+    modifiedAs=modifiedAs.rstrip(',')
+    modifiedAs+="),"
+    print(modifiedAs)
+    pattern = re.compile(r"\{{2}(\bIPA.+|\benPR.+\b|\brhymes.+)\}{2}")
 
     matches = pattern.finditer(line)
 
@@ -18,11 +39,17 @@ def modifySoundSection(section):
     for match in matches:
       start = match.start()
       end = match.end()
-      finalLine+= line[start+2:end-2]+","
+      
+    
+      line = line[start:end].replace("{{", "")
+      line = line.replace("}}", "")
+      line = line.replace("|", ": ")
+      
+      finalLine+= line+","
     finalSounds+="* "+finalLine+"\n"
   return finalSounds
 
-
+modifySoundSection(modifyString)
 
 #extract sound section as a string
 def extractSoundSection(string):
