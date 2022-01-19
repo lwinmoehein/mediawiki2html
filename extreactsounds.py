@@ -46,7 +46,6 @@ def getSoundsAccents(section):
       accents.append(accent)
     sound = {"locations":locations,"accents":accents}
     sounds.append(sound)
-  print(json.dumps(sounds))
   return sounds
   
     

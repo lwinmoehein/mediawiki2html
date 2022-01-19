@@ -8,7 +8,6 @@ from extreactsounds import extractSoundSection
 #open file
 file = open("data.json","a")
 words = []
-filecontent = ""
 #initialize xml root
 tree = ET.parse('raw.xml')
 root = tree.getroot()
@@ -25,12 +24,10 @@ for page in root:
     #pypandoc.convert_text(extractSoundSection(revision), 'rst', format='html')
     sounds = extractSoundSection(revision)
     
-    word = {"title":title,"sounds":sounds}    
-    words.append(object)
+    words.append({"title":title,"sounds":sounds})
     i+=1
 
 # save content to json file
-fileContent = json.dumps(words)
-file.write(filecontent)
+file.write(json.dumps(words))
 file.close()
 
