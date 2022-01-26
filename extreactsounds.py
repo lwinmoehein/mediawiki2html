@@ -31,10 +31,11 @@ def modifySoundSection(section):
     for match in matches:
       line = match.group(1)
       line = line.replace("|", ": ")
+      line = re.sub(r'(\||:\s)lang=.{2}', "", line)
       if(modifiedAs!=""):
-        finalLine+=("\n  * "+line)
+        finalLine+=("** "+line+"\n")
       else:
-        finalLine+=("\n* "+line)
+        finalLine+=("* "+line)
     #end accents
     
     #final modificatioin
@@ -51,9 +52,8 @@ def extractSoundSection(string):
       return ""
     pattern = re.compile(r'\n===အသံထွက်===.*\n*((?:\n.*)+?)(?=\n===)')
     soundSection = pattern.search(string)
-    grabbedString = ""
     if soundSection!=None:
-      modifiedString = modifySoundSection(grabbedString)
+      modifiedString = modifySoundSection(soundSection.group(0))
       return ExtractedSound(soundSection.start(), soundSection.end(), modifiedString)
 
     return ExtractedSound(None, None, None)
