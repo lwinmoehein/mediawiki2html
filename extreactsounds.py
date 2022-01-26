@@ -1,12 +1,5 @@
 import re
 
-modifyString = '''
-* {{a|US}}, {{a|UK}} {{enPR|fŭk}}, {{IPA2|/fʌk/}}
-* {{rhymes|ʌk}}
-* 
-* {{a|some Northern English accents}} {{enPR|fo͝ok}}, {{IPA2|/fʊk/}}
-* {{rhymes|ʊk}}'''
-
 #accept sound section and convert it to list string
 def modifySoundSection(section):
   if len(section)==0:
@@ -51,7 +44,6 @@ def modifySoundSection(section):
       finalSounds+=finalLine+"\n"
   return finalSounds
 
-print(modifySoundSection(modifyString))
 
 #extract sound section as a string
 def extractSoundSection(string):
@@ -60,9 +52,13 @@ def extractSoundSection(string):
     pattern = re.compile(r'\n===အသံထွက်===.*\n*((?:\n.*)+?)(?=\n===)')
     soundSection = pattern.search(string)
     grabbedString = ""
-    if soundSection:
-      grabbedString = soundSection[0]
-    else:
-      grabbedString = ""
-    modifiedString = modifySoundSection(grabbedString)
-    return modifiedString
+    if soundSection!=None:
+      modifiedString = modifySoundSection(grabbedString)
+      return ExtractedSound(soundSection.start(), soundSection.end(), modifiedString)
+
+    return ExtractedSound(None, None, None)
+class ExtractedSound:
+  def __init__(self,start,end,extractedSection):
+    self.start = start
+    self.end = end
+    self.extractedSection = extractedSection
