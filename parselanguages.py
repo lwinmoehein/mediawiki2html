@@ -1,5 +1,6 @@
-import pycountry
+from iso639 import Lang
 import re
+
 
     
 #extract sound languages as a string
@@ -13,13 +14,14 @@ def extractLangSection(string):
     
     return langSection.group(0)
 
-with open('wiki.txt', 'r') as file:
-    data = file.read()
-    languageSection = extractLangSection(data)
-    print(languageSection)
+#modify and return lang changed section
+def getLangSection(langsection):
+    #lang header
+    langSectionString = "\n====ဆင့်ပွားအသုံးများ====\n"
+    languageSection = extractLangSection(langsection)
     removedLangs = re.sub(r'(desctree\|*)|(desc\|*)|(\|*bor=1\|*)|(\{{2}l\|.+\}{2})',"",languageSection)
-    langCodes = re.compile(r'\{{2}([a-z]{2,3})\|.+\}{2}').finditer(removedLangs)
-    for langcode in langCodes:
-        if pycountry.countries.get(alpha_2=langcode.group(1))!=None:
-            print(pycountry.languages.get(alpha_2=langcode.group(1)).name)
-    
+    changeLangs = re.compile(r'\{{2}([a-z]{2,3})\|(.+)\}{2}')
+    langs = changeLangs.finditer(removedLangs)
+    for lan in langs:
+       langSectionString+="* ''"+Lang(lan.group(1)).name+"'' : "+lan.group(2)+"\n"
+    return langSectionString
