@@ -15,16 +15,16 @@ root = tree.getroot()
 
 i = 0
 for page in root:
-    #
+    
     if(i>100):
         break
     title = page.find('title').text
     #print(text)
     revision = page.find('revision/text').text
-    #pypandoc.convert_text(extractSoundSection(revision), 'rst', format='html')
-    sounds = extractSoundSection(revision)
+    sounds = pypandoc.convert_text(revision, 'rst', format='html')
+    #sounds = extractSoundSection(revision)
     
-    words.append({"title":title,"sounds":sounds})
+    words.append({"title":title,"sounds":revision})
     i+=1
 
 # save content to json file

@@ -1,5 +1,4 @@
 import re
-import json
 
 modifyString = '''
 * {{a|US}}, {{a|UK}} {{enPR|fŭk}}, {{IPA2|/fʌk/}}
