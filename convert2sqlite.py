@@ -3,7 +3,9 @@ import json
 import pypandoc
 import re
 import sqlite3
+import pycountry
 from extreactsounds import extractSoundSection,ExtractedSound
+
 
 con = sqlite3.connect('myantionary.db')
 
