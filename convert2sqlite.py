@@ -5,7 +5,7 @@ import re
 import sqlite3
 import pycountry
 from extreactsounds import extractSoundSection,ExtractedSound
-
+from extractlanguages import extractLangSection,ExtractedLang
 
 con = sqlite3.connect('myantionary.db')
 
@@ -30,12 +30,14 @@ for page in root:
     title = page.find('title').text
     #print(text)
     revision = page.find('revision/text').text
+    extractedLang = extractLangSection(revision)
+    if(extractedLang.start!=None):
+        revision = revision[:extractedLang.start]+extractedLang.extractedSection+revision[extractedLang.end:]
     extractedSound = extractSoundSection(revision)
     if(extractedSound.start!=None):
-        meaningWithSound = "\n===အသံထွက်===\n"+extractedSound.extractedSection+revision[extractedSound.end:]
-        print(meaningWithSound)
+        meaningWithSound = revision[:extractedSound.start]+"\n===အသံထွက်===\n"+extractedSound.extractedSection+revision[extractedSound.end:]
         #add to db
-        cur.execute("INSERT INTO words (id,title,meaning) VALUES (?,?,?)",(id,title,meaningWithSound))
+        cur.execute("INSERT INTO words (id,title,meaning) VALUES (?,?,?)",(id,title,revision))
     i+=1
     
 #db save and close
